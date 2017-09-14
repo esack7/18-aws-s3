@@ -24,7 +24,7 @@ module.exports = function(router) {
       .catch(err => errorHandler(err, req, res));
   });
 
-  router.get('/api/gallery', (req, res) => {
+  router.get('/api/gallery', bearerAuth, (req, res) => {
     debug('GET all /api/gallery');
 
     return Gallery.find()
@@ -32,7 +32,7 @@ module.exports = function(router) {
       .catch(err => errorHandler(err, req, res));
   });
 
-  router.put('/api/gallery', (req, res) => {
+  router.put('/api/gallery', bearerAuth, (req, res) => {
     debug('PUT /api/gallery/:_id');
 
     return Gallery.findByIdAndUpdate(req.params._id, req.body, { upsert:true, runValidators: true })
@@ -40,7 +40,7 @@ module.exports = function(router) {
       .catch(err => errorHandler(err, req, res));
   });
 
-  router.delete('/api/gallery', (req, res) => {
+  router.delete('/api/gallery', bearerAuth, (req, res) => {
     debug('DELETE /api/toy:_id');
 
     return Gallery.findByIdAndRemove(req.params._id)
