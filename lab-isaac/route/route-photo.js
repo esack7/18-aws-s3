@@ -15,15 +15,23 @@ module.exports = function(router) {
     console.log(req.file);
 
     return Photo.upload(req)
-    .then(photoData => new Photo(photoData).save())
-    .then(photo => res.json(photo))
-    .catch(err => errorHandler(err, req, res));
+      .then(photoData => new Photo(photoData).save())
+      .then(photo => res.json(photo))
+      .catch(err => errorHandler(err, req, res));
   });
   router.get('/api/photo/:_id', bearerAuth, (req, res) => {
-    console.log(res);
+    debug('GET /api/photo/:_id');
+
+    return Photo.findById(req.params._id)
+      .then(photo => res.json(photo))
+      .catch(err => errorHandler(err, req, res));
   });
   router.get('/api/photo', bearerAuth, (req, res) => {
-    console.log(res);
+    debug('GET all /api/photo');
+
+    return Photo.find()
+      .then(photos => res.json(photos.map(photo => photo.id)))
+      .catch(err => errorHandler(err, req, res));
   });
   // router.put('/api/photo/:_id', bearerAuth, upload.single('image'), (req, res) => {
   //

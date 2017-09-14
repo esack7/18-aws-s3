@@ -32,20 +32,20 @@ Photo.statics.upload = function(req) {
     };
 
     return s3UploadProm(params)
-    .then(s3Data => {
-      del([`${tempDir}/*`]);
+      .then(s3Data => {
+        del([`${tempDir}/*`]);
 
-      let photoData = {
-        name: req.body.name,
-        desc: req.body.desc,
-        objectKey: s3Data.Key,
-        imageURI: s3Data.Location,
-        userId: req.user._id,
-        galleryId: req.body.galleryId,
-      };
-      resolve(photoData);
-    })
-    .catch(reject);
+        let photoData = {
+          name: req.body.name,
+          desc: req.body.desc,
+          objectKey: s3Data.Key,
+          imageURI: s3Data.Location,
+          userId: req.user._id,
+          galleryId: req.body.galleryId,
+        };
+        resolve(photoData);
+      })
+      .catch(reject);
   });
 };
 
