@@ -4,10 +4,11 @@ const Gallery = require('../model/gallery');
 const errorHandler = require('../lib/error-handler');
 const debug = require('debug')('cfgram:route-gallery');
 const bearerAuth = require('../lib/bearer-auth-middleware');
+const jsonParser = require('body-parser').json();
 
 module.exports = function(router) {
 
-  router.post('/api/gallery', bearerAuth, (req, res) => {
+  router.post('/api/gallery', bearerAuth, jsonParser, (req, res) => {
     debug('POST /api/gallery');
 
     req.body.userId = req.user._id;
@@ -32,7 +33,7 @@ module.exports = function(router) {
       .catch(err => errorHandler(err, req, res));
   });
 
-  router.put('/api/gallery', bearerAuth, (req, res) => {
+  router.put('/api/gallery', bearerAuth, jsonParser, (req, res) => {
     debug('PUT /api/gallery/:_id');
 
     return Gallery.findByIdAndUpdate(req.params._id, req.body, { upsert:true, runValidators: true })
